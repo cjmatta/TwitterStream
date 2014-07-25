@@ -11,5 +11,8 @@ Options:
   -d DIR, --dir=DIR     Directory to save the tweets to.
 ```
 ## Requirements
+The following packages need to be installed before using:
 * [tweepy](https://github.com/tweepy/tweepy)
 * [elasticsearch-py](https://github.com/elasticsearch/elasticsearch-py)
+
+Also, elasticsearch should be running somewhere (right now it only looks on the localhost)
