@@ -89,7 +89,7 @@ class SaveAndIndexTweetsListener(StreamListener):
         if status.coordinates is not None:
             body["coordinates"] = status.coordinates["coordinates"]
         try:
-            es.index(index="baseball",
+            es.index(index="tweets",
                      doc_type="tweet",
                      id=status.id,
                      body=body)
