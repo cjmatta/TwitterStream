@@ -8,3 +8,9 @@ CONSUMER_SECRET = xxxx
 # Create an access token under the the Your access token section
 ACCESS_TOKEN = yyyyyyy
 ACCESS_TOKEN_SECRET = zzzzzzzz
+
+[Elasticsearch]
+# Add hosts, if your elasticsearch host is local, remove this section.
+# The script will default to localhost
+# Ensure you include the ports.
+hosts = hostnamea:9200,hostnameb:9200
