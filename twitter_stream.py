@@ -114,6 +114,27 @@ class TweetSaver(object):
             f.close()
 
 
+class SaveTweetsListener(StreamListener):
+    """ A listener that saves tweets to a specified directory
+    """
+    def __init__(self, tweet_saver=None, api=None):
+
+        super(SaveTweetsListener, self).__init__(api=api)
+        self._tweet_saver = tweet_saver
+
+        if tweet_saver is None:
+            raise Exception("Need a tweet saver!")
+
+    def on_data(self, raw_data):
+        """Run when data comes through. Write raw_data to file.
+        """
+        super(SaveTweetsListener, self).on_data(raw_data)
+        self._tweet_saver.saveTweet(raw_data)
+
+    def on_error(self, status):
+        logger.warn(status)
+
+
 class SaveAndIndexTweetsListener(StreamListener):
     """ A listener that saves tweets to a specified directory, and indexes them
     in an elasticsearch cluster.
@@ -171,6 +192,8 @@ def parseOptions():
     parser.add_option("-d", "--dir", dest="directory",
                       default=".", metavar="DIR",
                       help="Directory to save the tweets to.")
+    parser.add_option("-I", dest="index_tweets", action="store_true",
+                      help="Save tweets to an elasticsearch index")
     parser.add_option("-i", "--index", dest="index", default="default",
                       help="Index to save tweets to for elasticsearch.")
     parser.add_option("-t", "--type", dest="type", default="tweet",
@@ -182,17 +205,22 @@ if __name__ == '__main__':
     try:
         (options, args) = parseOptions()
         tweet_saver = TweetSaver(save_dir=options.directory)
-        elasticsearch = TweetIndexer(getElasticsearchHosts(), index=options.index,
-                                     doc_type=options.type)
 
         if config.has_section('Proxy'):
             api = API(proxy=config.get('Proxy', 'https_proxy'))
         else:
             api = API()
 
-        l = SaveAndIndexTweetsListener(tweet_saver=tweet_saver,
-                                       elasticsearch=elasticsearch,
-                                       api=api)
+        if options.index_tweets:
+            elasticsearch = TweetIndexer(getElasticsearchHosts(),
+                                         index=options.index,
+                                         doc_type=options.type)
+
+            l = SaveAndIndexTweetsListener(tweet_saver=tweet_saver,
+                                           elasticsearch=elasticsearch,
+                                           api=api)
+        else:
+            l = SaveTweetsListener(tweet_saver=tweet_saver, api=api)
 
         auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
         auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
