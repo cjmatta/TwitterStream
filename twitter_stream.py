@@ -96,22 +96,27 @@ class TweetSaver(object):
         """Appends tweet text (raw) to a tweets.json file in
         <self.saveDir>/YYYY/MM/DD/HH/tweets.json based on created_at field.
         """
-        data = json.loads(HTMLParser().unescape(tweet))
-        created_at = datetime.strptime(data['created_at'],
-                                       self._twitter_time_format)
-        save_dir = os.path.join(os.path.abspath(self._saveDir),
-                                str(created_at.year),
-                                str(created_at.month).zfill(2),
-                                str(created_at.day).zfill(2),
-                                str(created_at.hour).zfill(2))
-        self._make_sure_path_exists(save_dir)
-        tweet_file = os.path.join(save_dir, 'tweets.json')
+        try:
+            data = json.loads(HTMLParser().unescape(tweet))
+            created_at = datetime.strptime(data['created_at'],
+                                           self._twitter_time_format)
+            save_dir = os.path.join(os.path.abspath(self._saveDir),
+                                    str(created_at.year),
+                                    str(created_at.month).zfill(2),
+                                    str(created_at.day).zfill(2),
+                                    str(created_at.hour).zfill(2))
+            self._make_sure_path_exists(save_dir)
+            tweet_file = os.path.join(save_dir, 'tweets.json')
 
-        with open(tweet_file, 'a') as f:
-            f.write(tweet)
-            self._tweetCounter += 1
-            logger.info("Saved %d tweets." % self._tweetCounter)
-            f.close()
+            with open(tweet_file, 'a') as f:
+                f.write(tweet)
+                self._tweetCounter += 1
+                logger.info("Saved %d tweets." % self._tweetCounter)
+                f.close()
+
+        except Exception, e:
+            logger.warn(e)
+            return
 
 
 class SaveTweetsListener(StreamListener):
