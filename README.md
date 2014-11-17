@@ -1,5 +1,5 @@
 # TwitterStream
-This is a simple python script that listens to Twitter and saves tweets to the local filesystem. It also will index tweets in ElasticSearch if you include the `-i` flag.
+This is a simple python script that listens to Twitter and saves tweets to the local filesystem. It also will index tweets in ElasticSearch if you include the `-I` flag.
 
 ## Usage
 Copy the `twitter_stream.config.example` to `twitter_stream.config` and edit it to include your Twitter API keys.
