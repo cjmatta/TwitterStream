@@ -12,5 +12,5 @@ ACCESS_TOKEN_SECRET = zzzzzzzz
 [Elasticsearch]
 # Add hosts, if your elasticsearch host is local, remove this section.
 # The script will default to localhost
-# Ensure you include the ports.
+# Ensure you include port numbers.
 hosts = hostnamea:9200,hostnameb:9200
