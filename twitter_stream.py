@@ -61,6 +61,7 @@ class TweetIndexer(Elasticsearch):
         these_args.update(kwargs)
         super(TweetIndexer, self).index(**these_args)
 
+class DirNotFoundException(Exception): pass
 
 class TweetSaver(object):
     """A utility to append tweets to a json file
@@ -86,10 +87,11 @@ class TweetSaver(object):
     def saveDir(self):
         return self._saveDir
 
+
     @saveDir.setter
     def saveDir(self, value):
         if not os.path.exists(value):
-            raise Exception("Directory %s not found!" % value)
+            raise DirNotFoundException("Directory %s not found!" % value)
         self._saveDir = value
 
     def saveTweet(self, tweet):
@@ -111,11 +113,14 @@ class TweetSaver(object):
             with open(tweet_file, 'a') as f:
                 f.write(tweet)
                 self._tweetCounter += 1
-                logger.info("Saved %d tweets." % self._tweetCounter)
+                # logger.info("Saved %d tweets." % self._tweetCounter)
+                sys.stdout.write("\rSaved %d tweets." % self._tweetCounter)
+                sys.stdout.flush()
                 f.close()
 
+
         except Exception, e:
-            logger.warn(e)
+            logger.exception(e)
             return
 
 
@@ -235,9 +240,14 @@ if __name__ == '__main__':
             sys.exit(1)
 
         query = [x.strip() for x in options.query.split(',')]
-        logger.info("Listening for tweets containing: %s" % ', '.join(query))
+        print("Listening for tweets containing: %s" % ', '.join(query))
         stream = Stream(auth, l)
         stream.filter(track=query)
+
+    except DirNotFoundException, e:
+        logger.warn(e)
+        sys.exit(1)
+
     except KeyboardInterrupt:
         logger.warn("Keyboard interrupt... exiting.")
         sys.exit(1)
