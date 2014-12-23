@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
@@ -111,7 +111,11 @@ class TweetSaver(object):
             tweet_file = os.path.join(save_dir, 'tweets.json')
 
             with open(tweet_file, 'a') as f:
-                f.write(tweet)
+                if (options.ppretty):
+                    mydata = json.loads(tweet)
+                    f.write(json.dumps(mydata, indent=4))
+                else:
+                    f.write(tweet)
                 self._tweetCounter += 1
                 # logger.info("Saved %d tweets." % self._tweetCounter)
                 sys.stdout.write("\rSaved %d tweets." % self._tweetCounter)
@@ -208,6 +212,9 @@ def parseOptions():
                       help="Index to save tweets to for elasticsearch.")
     parser.add_option("-t", "--type", dest="type", default="tweet",
                       help="Document type.")
+    parser.add_option("-p", "--pretty", action="store_true",
+                      dest="ppretty", default=False,
+                      help="Store results in human-readable format.")
 
     return parser.parse_args()
 

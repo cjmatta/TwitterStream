@@ -16,6 +16,7 @@ Options:
   -i INDEX, --index=INDEX
                         Index to save tweets to for elasticsearch.
   -t TYPE, --type=TYPE  Document type.
+  -p, --pretty          Print results in human-readable format.
 ```
 ## Requirements
 The following packages need to be installed before using:
