@@ -11,6 +11,7 @@ import sys
 from HTMLParser import HTMLParser
 import errno
 from datetime import datetime
+from elasticsearch import Elasticsearch
 import ConfigParser
 
 this_dir = os.path.abspath(os.path.dirname(__file__))
@@ -228,7 +229,6 @@ if __name__ == '__main__':
             api = API()
 
         if options.index_tweets:
-            from elasticsearch import Elasticsearch
             elasticsearch = TweetIndexer(getElasticsearchHosts(),
                                          index=options.index,
                                          doc_type=options.type)
