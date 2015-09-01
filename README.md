@@ -1,7 +1,11 @@
-# TwitterStream
+TwitterStream
+=============
+
 This is a simple python script that listens to Twitter and saves tweets to the local filesystem. It also will index tweets in ElasticSearch if you include the `-I` flag.
 
-## Usage
+Usage
+-----
+
 Copy the `twitter_stream.config.example` to `twitter_stream.config` and edit it to include your Twitter API keys.
 
 ```
@@ -18,9 +22,18 @@ Options:
   -t TYPE, --type=TYPE  Document type.
   -p, --pretty          Print results in human-readable format.
 ```
-## Requirements
-The following packages need to be installed before using:
-* [tweepy](https://github.com/tweepy/tweepy)
-* [elasticsearch-py](https://github.com/elasticsearch/elasticsearch-py)
+
+Requirements
+------------
+
+TwitterStream relies on tweepy for streaming, and optionally elasticsearch for indexing.
+
+### Required
+
+-	[tweepy](https://github.com/tweepy/tweepy)
+
+### Optional - Can be used with [Elastic Search](http://elastic.co)
+
+-	[elasticsearch-py](https://github.com/elasticsearch/elasticsearch-py)
 
 Also, elasticsearch should be running somewhere (right now it only looks on the localhost)
