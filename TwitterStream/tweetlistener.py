@@ -60,4 +60,11 @@ class TweetListener(StreamListener):
             pass
 
     def on_error(self, status):
-        logger.warn(status)
+        error_messages = {
+            400: "Return Code 400: Bad Request",
+            401: "Return Code 401: Unauthorized",
+            403: "Return Code 403: Forbidden",
+            420: "Return Code 420: Too many requests in too short a time."
+        }
+        logger.warn(error_messages.get(status, "Unknown Erorr: %s" % status))
+        return False
