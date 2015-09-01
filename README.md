@@ -9,18 +9,18 @@ Usage
 Copy the `twitter_stream.config.example` to `twitter_stream.config` and edit it to include your Twitter API keys.
 
 ```
-Usage: twitter_stream.py [options]
+Usage: twitter_stream.py [-h] -q "Query" [-d savedir] [-I -i indexname -t type] [-p | --pretty]
 
 Options:
   -h, --help            show this help message and exit
   -q "Phillies, Red Sox", --query="Phillies, Red Sox"
                         Quoted, comma-sepparated list of queries.
   -d DIR, --dir=DIR     Directory to save the tweets to.
-  -I                    Save tweets to an elasticsearch index
+  -I                    Optional - Save tweets to an elasticsearch index
   -i INDEX, --index=INDEX
-                        Index to save tweets to for elasticsearch.
-  -t TYPE, --type=TYPE  Document type.
-  -p, --pretty          Print results in human-readable format.
+                        Optional - Index to save tweets to for elasticsearch.
+  -t TYPE, --type=TYPE  Optional - Document type.
+  -p, --pretty          Optional - Print results in human-readable format.
 ```
 
 Requirements
