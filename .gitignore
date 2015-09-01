@@ -1,2 +1,4 @@
 twitter_stream.config
 *.pyc
+*.swp
+*.bak
