@@ -6,7 +6,6 @@ from optparse import OptionParser
 import sys
 from TwitterStream.tweetsaver import TweetSaver
 from TwitterStream.tweetlistener import TweetListener
-from TwitterStream.tweetindexer import TweetIndexer
 from TwitterStream import config
 from TwitterStream.tweetsaver import DirNotFoundException
 
@@ -43,6 +42,14 @@ if __name__ == '__main__':
         c = config.Config()
 
         if options.index_tweets:
+            try:
+                from TwitterStream.tweetindexer import TweetIndexer
+            except ImportError:
+                logger.warn("In order to index tweets to elasticsearch" +
+                " you need to install the elasticsearch-py package: \n" +
+                "   run:  `$ pip install elasticsearch-py` to install.")
+                sys.exit(1)
+
             indexer = TweetIndexer(c.getElasticsearchHosts(),
                                    index=options.index,
                                    doc_type=options.type)
