@@ -47,7 +47,7 @@ if __name__ == '__main__':
             except ImportError:
                 logger.warn("In order to index tweets to elasticsearch" +
                 " you need to install the elasticsearch-py package: \n" +
-                "   run:  `$ pip install elasticsearch-py` to install.")
+                "   run:  `pip install elasticsearch` to install.")
                 sys.exit(1)
 
             indexer = TweetIndexer(c.getElasticsearchHosts(),
